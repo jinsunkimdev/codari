@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>코다리</title>
+<link rel="shortcut icon" href="../img/favicon.ico" />
+<link rel="icon" href="../img/favicon.ico" />
+<style>
+@import url("/css/fackfont.css");
+	td{ vertical-align: middle;}
+	tr{ text-align: center;}
+	ul.pagination li:last-child {
+	padding-left: 0 !important;
+}
+ul.pagination li:first-child {
+	padding-right: 0 !important;
+}
+ul.pagination {
+	text-align: center;
+}
+.paging {
+	text-decoration: none;
+	margin: 2px;
+	border-bottom: none;
+	font-size: 15px;
+}
+.paging:hover {
+	background-color: lightpink;
+}
+#head{
+ 		font-weight: bold;
+ 		background-color: pink;
+ 		color: windowtext;
+	}
+</style>
+</head>
+<body>
+
+								<div style="float:right; display:block;" class="write_btn">
+   								<a class="button" onclick="location.href='/board/boardInsert.do'" th:if="${session.userLoginInfo!=null}">글작성</a>
+								</div><br><br>
+						
+						<table border="1">
+  							<tr id="head">
+    							<td width="5%">번호</td>
+    							<td width="15%">카테고리</td>
+   								<td>제목</td>
+    							<td width="10%">작성자</td>
+   							    <td width="10%">게시일</td>
+    							<td width="7%">조회수</td>
+  							</tr>
+	  							<tr th:each= "board : ${boardlist}">
+	    							<td th:text="${board.board_id}"></td>
+	   								 <td th:text="${board.board_category_name}"></td>
+	    							<td><a th:href="@{'boardDetail.do?bid='+${board.board_id}}" th:text="${board.board_title}"></a></td>
+	   								 <td th:text="${board.user_nickname}"></td>
+	    							<td th:text="${board.created_date}"></td>
+	    							<td th:text="${board.view}"></td>
+	  							</tr>
+							</table>
+							<ul class="pagination">
+        						 <li class="paging" th:each="pageNum, numStat : ${#numbers.sequence( 1,pageCount)}" >
+       	 						 <a class="paging" id="su${numStat.count}" th:text="${numStat.count}">[[${numStat.count}]]</a>
+       	 						 </li> 
+    						</ul><br>
+				<script>
+       	 $(function(){
+       		 
+       		 $(".paging").click(function(){
+       			$.ajax({
+       				url : "boardAll2.do",
+       				data:{"pageNum": $(this).text()},
+       				success:function(responseText){
+       					$("#here").html(responseText);
+       				}
+       			});
+       			 
+       		 });
+       		  
+       	  });
+       	 </script>
+</body>
+</html>

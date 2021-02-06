@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codari.myapp.dao.BoardDAO">
+	
+	<select id="selectAll" resultType="com.codari.myapp.vo.BoardUserVO" parameterType="map">
+		SELECT  
+		@ROWNUM:=@ROWNUM+1 AS RNUM
+		,board_id, board_category_name, board_title, board_content, date_format(created_date, '%Y-%m-%d') created_date, date_format(modified_date, '%Y-%m-%d') modified_date, view, user.user_nickname 
+		from board, user, 
+		(SELECT @ROWNUM := 0) TMP
+		where board.user_id = user.user_id ORDER BY 1
+   		LIMIT #{start}, #{amount}
+   		
+	</select>
+    <select id="boardById" resultType="com.codari.myapp.vo.BoardVO" parameterType="int">
+		SELECT * from board 
+		where board_id=#{aa} ORDER BY 1
+	</select>
+	
+	<insert id="insert" parameterType="com.codari.myapp.vo.BoardVO">
+     insert into board( board_category_name, board_title, board_content, created_date, modified_date, user_id, view)
+     values( #{board_category_name}, #{board_title}, #{board_content}, current_timestamp(), current_timestamp(), #{user_id}, 0 )
+   </insert>
+   
+   
+   <update id="update" 
+            parameterType="com.codari.myapp.vo.BoardVO">
+       update board
+       set board_category_name = #{board_category_name}, board_title = #{board_title}, board_content = #{board_content}, modified_date = current_timestamp()
+       where board_id = #{board_id}
+   </update> 
+   
+   <update id="updateViewCnt" parameterType="int">
+	 update board
+	 set view = view + 1
+	 where board_id = #{board_id}
+   </update>
+
+   
+   <delete id="delete" parameterType="int">
+      delete from board
+      where board_id = #{board_id}
+   </delete>
+   
+ </mapper>

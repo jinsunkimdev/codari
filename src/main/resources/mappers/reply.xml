@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codari.myapp.dao.BoardReplyDAO">
+	
+	<select id="replySelectAll" resultType="com.codari.myapp.vo.BoardReplyVO" parameterType="int">
+		SELECT * from board_reply
+		where board_id = #{aa} ORDER BY 1
+	</select>
+	
+    <select id="replyById" resultType="com.codari.myapp.vo.BoardReplyVO" parameterType="int">
+		SELECT  * from board_reply 
+		where reply_id=#{aa} ORDER BY 1
+	</select>
+	
+<!-- 	<select id="getMaxId" parameterType="int">
+		SELECT MAX(board_id) FROM board
+	</select> -->
+	
+	<insert id="addReply" parameterType="com.codari.myapp.vo.BoardReplyVO">
+     insert into board_reply( reply_content, user_nickname, replied_date, board_id)
+     values( #{reply_content}, #{user_nickname}, current_timestamp(), #{board_id})
+   </insert>
+   
+   <delete id="deleteReply" parameterType="int">
+      delete from board_reply
+      where reply_id = #{reply_id}
+   </delete>
+   
+	<!-- <insert id="addReply" parameterType="com.codari.myapp.vo.BoardVO">
+     insert into board_reply( reply_id, user_nickname, reply_content, board_id)
+     values(  #{reply_id}, #{user_nickname}, #{reply_content}, #{board_id} )
+   </insert>  -->
+   
+   
+ </mapper>

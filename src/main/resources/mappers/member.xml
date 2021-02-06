@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codari.myapp.dao.MemberDAO">
+	
+	<select id="selectAll" resultType="com.codari.myapp.vo.MemberVO" parameterType="map">
+		SELECT 
+		@ROWNUM:=@ROWNUM+1 AS RNUM,
+		 user.* 
+		 from user,  
+		(SELECT @ROWNUM := 0) TMP
+   		LIMIT #{start}, #{amount}
+	</select>
+	
+    <select id="selectById" resultType="com.codari.myapp.vo.MemberVO" parameterType="int">
+		SELECT * from user where user_id=#{aa} ORDER BY 1
+	</select>
+	
+    <select id="selectByEmail" resultType="com.codari.myapp.vo.MemberVO" parameterType="String">
+		SELECT * from user where user_email=#{user_email} ORDER BY 1
+	</select>
+	
+	<select id="idCheck" resultType="com.codari.myapp.vo.MemberVO">
+ 		select user_email from user
+     	where user_email = #{user_email}
+	</select>
+	
+	<select id="nicCheck" resultType="com.codari.myapp.vo.MemberVO">
+ 		select user_nickname from user
+     	where user_nickname = #{user_nickname}
+	</select>
+	
+	<!-- 관리자용 유저 추가 -->
+	<insert id="insert" parameterType="com.codari.myapp.vo.MemberVO">
+     insert into user(user_id, user_email, user_nickname, user_password, user_role)
+     values( #{user_id}, #{user_email}, #{user_nickname}, #{user_password}, #{user_role} )
+   </insert>
+   
+   <!-- 유저용 회원가입 -->
+	<insert id="register"  parameterType="com.codari.myapp.vo.MemberVO">
+		insert into user(user_id, user_email, user_nickname, user_password, user_role)
+        values( #{user_id}, #{user_email}, #{user_nickname}, #{user_password}, #{user_role} )
+	</insert>
+   
+   <!-- 유저용  -->
+   <update id="update_user" parameterType="com.codari.myapp.vo.MemberVO">
+       update user
+       set user_email = #{user_email}, user_nickname = #{user_nickname}, user_password = #{user_password}
+       where user_id = #{user_id}
+   </update>
+   
+   <!-- 관리자용  -->
+   <update id="update_admin" parameterType="com.codari.myapp.vo.MemberVO">
+       update user
+       set user_email = #{user_email}, user_nickname = #{user_nickname}, user_password = #{user_password}, user_role = #{user_role}
+       where user_id = #{user_id}
+   </update>
+   
+   <delete id="delete" parameterType="int">
+      delete from user
+      where user_id = #{user_id}
+   </delete>
+	
+ </mapper>

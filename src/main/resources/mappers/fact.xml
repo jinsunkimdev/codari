@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codari.myapp.dao.FactDAO">
+	
+	<!-- selectAll, 첫 페이지 -->
+	<select id="selectAll" resultType="com.codari.myapp.vo.FactVO">
+		SELECT @ROWNUM:=@ROWNUM+1 AS RNUM, fact.* FROM fact, (SELECT @ROWNUM := 0) TMP LIMIT 0, 4
+	</select>
+	
+	<!-- selectAll, 다음 페이지 -->
+	<select id="selectNextPage" resultType="com.codari.myapp.vo.FactVO" parameterType="map">
+		SELECT @ROWNUM:=@ROWNUM+1 AS RNUM, fact.* FROM fact, (SELECT @ROWNUM := 0) TMP LIMIT #{start}, #{count}
+	</select>
+	
+	<!-- selectById -->
+    <select id="selectById" resultType="com.codari.myapp.vo.FactVO" parameterType="int">
+		SELECT * from fact where fact_id=#{aa} ORDER BY 1
+	</select>
+	
+	<!-- insert -->
+	<insert id="insert" parameterType="com.codari.myapp.vo.FactVO">
+     insert into fact(fact_title, fact_content, user_id, fact_thumbnail)
+     values(#{fact_title}, #{fact_content}, #{user_id}, #{fact_thumbnail})
+	</insert>
+	
+    <select id="selectMaxId" resultType="int" >
+		SELECT MAX(fact_id) from fact
+	</select>
+	
+	<!-- delete -->
+    <delete id="delete" parameterType="int">
+      delete from fact
+      where fact_id = #{fact_id}
+    </delete>
+	
+	<!-- update -->
+    <update id="update" parameterType="com.codari.myapp.vo.FactVO">
+       update fact
+       set fact_title = #{fact_title}, fact_content = #{fact_content}, fact_thumbnail = #{fact_thumbnail}
+       where fact_id = #{fact_id}
+    </update>
+</mapper>

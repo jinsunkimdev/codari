@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th= "http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link rel="shortcut icon" href="../img/favicon.ico" />
+<link rel="icon" href="../img/favicon.ico" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+<link rel="stylesheet" href="/assets/css/login.css" />
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<title>코다리</title>
+<style type="text/css">
+@import url("/css/fackfont.css");
+</style>
+</head>
+<body>
+	<div class="entireBody">
+		<form method="post" th:name="userInfo" th:action="@{/member/loginProcess}">
+			<div class="bigLoginText"><div class="loginTitle" onclick="location.href='/'">C O D A R I</div></div>
+			<div class="bigErrorText"><div class="errorText" th:text="${loginError}" id="error">WELCOME</div></div>
+			<div class="form">
+				<input type="email" th:name="user_email" id="user_email" th:autocomplete="off" required />
+				<label for="loginInput" class="label-loginInput">
+					<span class="content-loginInput">아이디(email)입력</span>
+				</label>
+			</div>
+			<br><br>
+			<div class="form">
+				<input type="password" th:name="user_password" id="user_password" th:autocomplete="off" required />
+				<label for="loginInput" class="label-loginInput">
+					<span class="content-loginInput">password입력</span>
+				</label>
+			 </div>
+			<div class="container">
+				<span><input type="submit" id="login2" class="btn btn3" value="login" /></span>
+				<a class="btn4" th:href = "@{/member/register}" >signup</a>
+			</div>
+		</form>
+	</div>
+	<script src="/assets/js/jquery.min.js"></script>
+	<script src="/assets/js/browser.min.js"></script>
+	<script src="/assets/js/breakpoints.min.js"></script>
+	<script src="/assets/js/util.js"></script>
+	<script src="/assets/js/main.js"></script>
+</body>
+</html>

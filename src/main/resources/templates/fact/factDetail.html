@@ -1,0 +1,152 @@
+<!DOCTYPE HTML>
+<!--
+	Editorial by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<link rel="shortcut icon" href="../img/favicon.ico" />
+<link rel="icon" href="../img/favicon.ico" />
+<title>코다리</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+<link rel="shortcut icon" href="img/favicon.ico" />
+<link rel="icon" href="img/favicon.ico" />
+<link rel="stylesheet" href="/assets/css/main.css" />
+<style type="text/css">
+@import url("/css/fackfont.css");
+.files {
+	display: contents;
+	float: right;
+}
+.box-min {
+	float: right;
+	max-width: 40%;
+    border-radius: 0.375em;
+    border: solid 1px rgba(210, 215, 217, 0.75);
+    padding: 1.5em;
+    margin-bottom: 10px !important;
+}
+.text-center {
+	text-align: center;
+}
+.wrapsd {
+	font-size: 8px;
+	word-break: break-word;
+}
+.wrapsd:hover {
+	color: blue !important;
+}
+</style>
+</head>
+<body class="is-preload">
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Main -->
+		<div id="main">
+			<div class="inner">
+
+				<!-- Header -->
+				<header id="header">
+					<a href="#" class="logo"><strong>코</strong>로나 정보, <strong>다</strong> <strong>이</strong>곳</a>
+					<ul th:if ="${session.userLoginInfo != null}" class="icons">
+						<li><span th:text="${session.userLoginInfo.user_nickname}"></span>님, 환영합니다.&nbsp;&nbsp;<a th:href = "@{/member/logoutProcess}" class="button small">로그아웃</a></li>
+					</ul>
+				</header>
+
+				<!-- Content -->
+				<section>
+					<header class="main">
+						<h1>COVID-19 팩트 &#10004;&#10004;</h1>
+					</header>
+				</section>
+				<!-- Section -->
+				<section>
+					<div class="box">
+						<h3 th:text="${'Q. ' + fact.fact_title}"></h3>
+						<hr>
+						<p style="white-space: pre-wrap;" th:utext = "${content}"></p>
+					</div>
+					<div th:unless="${files == null}" class="box-min">
+						<p class="text-center">첨부파일</p><br>
+						<div th:each="file : ${files}">
+								<a class="wrapsd" th:href="@{'/download?id='+${fact.fact_id}+'&f='+${file.file_name}}" th:text="${file.file_name}"></a>
+						</div>
+					</div>
+					<a href="javascript:history.back();">뒤로가기</a>
+					<a th:href="@{'/fact/Update.do?id='+${fact.fact_id}}">수정하기</a>
+					<a th:href="@{'/fact/Delete.do?id='+${fact.fact_id}}">삭제하기</a>
+				</section>
+			</div>
+		</div>
+
+		<!-- Sidebar -->
+		<div id="sidebar">
+			<div class="inner">
+				<!-- Menu -->
+				<nav id="menu">
+					<header class="major">
+						<h2>Menu</h2>
+					</header>
+					<ul>
+						<li><a href="/">Homepage</a></li>
+						<li><a href="/notice/noticeList.do">공지사항</a></li>
+						<li><span class="opener">정보</span>
+							<ul>
+								<li><a href="/fact/factCheck">Fact Check</a></li>
+								<li><a href="/board/boardAll.do">정보 공유</a></li>
+								<li><a href="/covid/covidHospitalHome.do">실시간 병원 정보</a></li>
+							</ul>
+						</li>
+						<li th:if="${session.userLoginInfo != null}"><a th:href="@{/member/myPage.do}">마이페이지</a></li>
+						<li th:if="${session.userLoginInfo == null}"><a th:href="@{/member/login}">로그인 페이지</a></li>
+						<li th:if="${session.userLoginInfo == null}"><a th:href="@{/member/register}">회원 가입</a></li>
+						<li th:if="${session.userLoginInfo != null && session.userLoginInfo.user_role == 'admin'}"><span class="opener">관리자 페이지</span>
+							<ul>
+								<li><a href="/member/memberAll.do">유저 목록</a></li>
+							</ul>
+						</li>
+					</ul>
+				</nav>
+
+
+				<!-- Section -->
+				<section>
+					<header class="major">
+						<h2>Contact Us</h2>
+					</header>
+					<p>문의 사항이 있다면 아래의 수단 중 하나로 문의해 주세요.</p>
+					<ul class="contact">
+						<li class="icon solid fa-envelope"><a href="#">codari@gmail.com</a></li>
+						<li class="icon solid fa-phone">(02) 123-4567</li>
+						<li class="icon solid fa-home">서울시 성북구 한성대학교 #02876<br />Korea, TN 02-760-5800</li>
+					</ul>
+				</section>
+
+				<!-- Footer -->
+				<footer id="footer">
+					<p class="copyright">
+						&copy; 2020 -
+						<script>
+							document.write(new Date().getFullYear());
+						</script> 
+						All rights reserved. <br>Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.
+					</p>
+				</footer>
+			</div>
+		</div>
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="/assets/js/jquery.min.js"></script>
+	<script src="/assets/js/browser.min.js"></script>
+	<script src="/assets/js/breakpoints.min.js"></script>
+	<script src="/assets/js/util.js"></script>
+	<script src="/assets/js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE HTML>
+<!--
+	Editorial by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>코다리</title>
+<link rel="shortcut icon" href="../img/favicon.ico" />
+<link rel="icon" href="../img/favicon.ico" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+<link rel="stylesheet" href="/assets/css/main.css" />
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.1/codemirror.min.css" integrity="sha512-MWdvo/Qqcf4pY1ecQUB1uBn0qLp19U/qJ1Rpp2BDZeuBA7YsFEwkvqR/+aG4BroPiAYDunKJ6X8R/Pmdt3p7oA==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.1/theme/pastel-on-dark.min.css" integrity="sha512-kcwXu8swgWHAdTrmVuUiuJK0+VtDCVXhOpznpnZHfx84G78aGLqbEtu5MYN08zV3XpP719SPTOzrcfirU1JnDA==" crossorigin="anonymous" />
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.1/codemirror.min.js" integrity="sha512-9fASXXoC6x4BKdqe6IcEYZnt4KPMiQx5YJIsiWevf2QpSXfPcXMj4MTzIbwQuKJRysBlRh1LGHIaQm/415WyEA==" crossorigin="anonymous"></script>
+<script type="text/javascript">
+$(function() {
+	var fonts = ['맑은 고딕', '돋움', '궁서', '굴림', '굴림체', '궁서체', '나눔 고딕', '바탕', '바탕체', '새굴림', 'HY견고딕', 'HY견명조', 'HY궁서B', 'HY그래픽M', 'HY목각파임B', 'HY신명조', 'HY얕은샘물M', 'HY엽서L', 'HY엽서M', 'HY중고딕', 'HY헤드라인M', '휴먼매직체', '휴먼모음T', '휴먼아미체', '휴먼둥근헤드라인', '휴먼편지체', '휴먼옛체'];
+	console.log("페이지 불러왔습니다");
+	$('#summernote').summernote({
+		height: 300,                 // set editor height
+		minHeight		:	null,             // set minimum height of editor
+		maxHeight		:	null,             // set maximum height of editor
+		focus			:	true,                 // set focus to editable area after initializing summernote
+		fontNames		:	fonts.sort(),
+		codemirror		:	{
+    		theme			:	'pastel-on-dark',
+    		lineNumbers		:	true,
+    		tabSize			:	"8"
+							},
+		toolbar: [
+			['style', ['style']], 
+			['font', ['bold', 'underline', 'clear']], 
+			['fontsize', ['fontsize']], 
+			['fontname', ['fontname']], 
+			['color', ['color']], 
+			['para', ['ul', 'ol', 'paragraph']],
+			['table', ['table']],
+			['insert', ['link', 'picture', 'video']]]
+		});
+	});
+</script>
+<style type="text/css">
+@import url("/css/fackfont.css");
+</style>
+</head>
+<body class="is-preload">
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Main -->
+		<div id="main">
+			<div class="inner">
+
+				<!-- Header -->
+				<header id="header">
+					<a th:href="@{/index}" class="logo"><strong>코</strong>로나 정보, <strong>다</strong> <strong>이</strong>곳</a>
+					<ul th:if ="${session.userLoginInfo != null}" class="icons">
+						<li><span th:text="${session.userLoginInfo.user_nickname}"></span>님, 환영합니다.&nbsp;&nbsp;<a th:href = "@{/member/logoutProcess}" class="button small">로그아웃</a></li>
+					</ul>
+				</header>
+
+				<!-- Content -->
+				<section th:if="${session.userLoginInfo.user_role=='admin'}">
+					<form method="post" th:action="@{noticeUpdateView.do}">
+								<div class="row gtr-uniform">
+									<input type="hidden" name="notice_id" id="notice_id" th:value="${notice.notice_id}" class="notice_id"/>
+									<div class="col-6 col-12-xsmall">
+										<input type="text" name="notice_title" id="notice_title" th:value="${notice.notice_title}"
+											placeholder="제목을 입력해주세요" /><br>
+									</div>
+									<!-- Break -->
+									<div class="col-10">
+										<textarea class="notice_content" name="notice_content" id="summernote" 
+											placeholder="공지사항을 입력해주세요" rows="20" cols=50>[[${notice.notice_content}]]</textarea>
+									</div>
+									<!-- Break -->
+									<div class="col-12">
+										<ul class="actions">
+											<li><input type="button" value="작성완료" id="fillout2"
+												class="primary" /></li>
+											<li><input type="reset" value="Reset" /></li>
+										</ul>
+										
+									</div>
+								</div>
+					 </form>
+					<script>
+					$(function(){
+						$("#fillout2").click(function(){
+							$.ajax({
+								url:"/notice/noticeUpdateView.do",
+								type:"post",
+								data:{"notice_id":$("#notice_id").val(),"notice_title":$("#notice_title").val(), "notice_content":$(".notice_content").val()},
+									  success:function(data){
+										  alert(data);
+										  if(data =='수정되었습니다.')
+											  location.href="/notice/noticeList.do";
+										  else(data =='수정실패(error)')
+									  }
+							});
+						});
+					});
+					</script>
+				</section>
+
+			</div>
+		</div>
+
+		<!-- Sidebar -->
+		<div id="sidebar">
+			<div class="inner">
+				<!-- Menu -->
+				<nav id="menu">
+					<header class="major">
+						<h2>Menu</h2>
+					</header>
+					<ul>
+						<li><a href="/">Homepage</a></li>
+						<li><a href="/notice/noticeList.do">공지사항</a></li>
+						<li><span class="opener">정보</span>
+							<ul>
+								<li><a href="/fact/factCheck">Fact Check</a></li>
+								<li><a href="/board/boardAll.do">정보 공유</a></li>
+								<li><a href="/covid/covidHospitalHome.do">실시간 병원 정보</a></li>
+							</ul>
+						</li>
+						<li th:if="${session.userLoginInfo != null}"><a th:href="@{/member/myPage.do}">마이페이지</a></li>
+						<li th:if="${session.userLoginInfo == null}"><a th:href="@{/member/login}">로그인 페이지</a></li>
+						<li th:if="${session.userLoginInfo == null}"><a th:href="@{/member/register}">회원 가입</a></li>
+						<li th:if="${session.userLoginInfo != null && session.userLoginInfo.user_role == 'admin'}"><span class="opener">관리자 페이지</span>
+							<ul>
+								<li><a href="/member/memberAll.do">유저 목록</a></li>
+							</ul>
+						</li>
+					</ul>
+				</nav>
+
+
+				<!-- Section -->
+				<section>
+					<header class="major">
+						<h2>Contact Us</h2>
+					</header>
+					<p>문의 사항이 있다면 아래의 수단 중 하나로 문의해 주세요.</p>
+					<ul class="contact">
+						<li class="icon solid fa-envelope"><a href="#">codari@gmail.com</a></li>
+						<li class="icon solid fa-phone">(02) 123-4567</li>
+						<li class="icon solid fa-home">서울시 성북구 한성대학교 #02876<br />Korea, TN 02-760-5800</li>
+					</ul>
+				</section>
+
+				<!-- Footer -->
+				<footer id="footer">
+					<p class="copyright">
+						&copy; 2020 -
+						<script>
+							document.write(new Date().getFullYear());
+						</script> 
+						All rights reserved. <br>Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.
+					</p>
+				</footer>
+			</div>
+		</div>
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="/assets/js/jquery.min.js"></script>
+	<script src="/assets/js/browser.min.js"></script>
+	<script src="/assets/js/breakpoints.min.js"></script>
+	<script src="/assets/js/util.js"></script>
+	<script src="/assets/js/main.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</body>
+</html>

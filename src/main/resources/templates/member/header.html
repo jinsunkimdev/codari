@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="shortcut icon" href="../img/favicon.ico" />
+<link rel="icon" href="../img/favicon.ico" />
+<style>
+@import url("/css/fackfont.css");
+  #title{ border: 1px solid green;}
+  #right{ float: right; }
+  
+</style>
+    
+<div id="title">
+   <p th:if="${member !=null }">${member.user_nickname}님</p>
+   <p th:if="${member ==null }">AnonymousGuest님</p>
+  
+   <p id="right"> 
+   <p th:if="${member != null}"><a th:href="../member/logout">로그아웃</a></p> 
+   <p th:if="${member == null}"><a th:href="../member/login">로그인</a></p> 
+   </p>  
+</div>
+</html>

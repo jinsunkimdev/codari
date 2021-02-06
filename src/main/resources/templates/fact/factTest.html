@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<body>
+		<div id="here" class="posts">
+			<article th:each="fact : ${factList}">
+				<h3 th:text="${'Q. ' + fact.fact_title}"></h3>
+				<a href="#" class="image"><img th:classappend=${fact.fact_id} src="" alt="" /></a>
+				<strong><p style="color: red;" th:text="${'A. ' + fact.fact_thumbnail}"></p></strong>
+				<ul class="actions">
+					<li><a th:href="@{'/fact/fact.do?id='+${fact.fact_id}}" class="button">More</a></li>
+				</ul>
+			</article>
+		</div>
+	</body>
+</html>

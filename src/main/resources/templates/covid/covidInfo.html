@@ -1,0 +1,90 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<link rel="shortcut icon" href="../img/favicon.ico" />
+<link rel="icon" href="../img/favicon.ico" />
+<style>
+ #head{
+ 		font-weight: bold;
+ 		background-color: pink;
+ 		color: windowtext;
+ }
+ #row1 {
+ 		color: black;
+ }
+ #row2 {
+ 		color: #f56a6a;
+ 		font-weight: bold;
+ }
+ table{
+ 		text-align: center;
+ 		vertical-align: middle;
+ }
+</style>
+<style type="text/css">
+@import url("/css/fackfont.css");
+</style>
+</head>
+<body>
+<table border="1">
+  							<tr id="head">
+    							<td width="5%">기준일</td>
+   								<td width="15%">확진자 수</td>
+    							<td width="15%">사망자 수</td>
+   							    <td width="15%">누적검사 수</td>
+    							<td width="15%">검사완료 수</td>
+    							<td width="15%">음성결과 수</td>
+    							<td width="15%">격리해제 수</td>
+  							</tr>
+  							
+	  						<tr id="row1" th:each= "item, i : ${itemlist}">
+	  							<td th:if="${i.index == 1}">
+	   								 	<span th:text="${item.stateDt}"></span>
+	   							</td>
+	  							<td th:if="${i.index == 1}">
+	   								 	<span th:text="${item.decideCnt}"></span>
+	   							</td>
+	  							<td th:if="${i.index == 1}">
+	   								 	<span th:text="${item.deathCnt}"></span>
+	   							</td>
+	  							<td th:if="${i.index == 1}">
+	   								 	<span th:text="${item.accExamCnt}"></span>
+	   							</td>
+	  							<td th:if="${i.index == 1}">
+	   								 	<span th:text="${item.accExamCompCnt}"></span>
+	   							</td>
+	  							<td th:if="${i.index == 1}">
+	   								 	<span th:text="${item.resutlNegCnt}"></span>
+	   							</td>
+	  							<td th:if="${i.index == 1}">
+	   								 	<span th:text="${item.clearCnt}"></span>
+	   							</td>
+	  						</tr>
+	  							
+	  							<tr id="row2" th:each= "item, i : ${itemlist}">
+	    							<td th:text="전일대비" th:if="${i.index == 1}"></td>
+	   								 <td th:if="${i.index == 1}">
+	   								 	<span th:text="'+'+${item.dailyDecideCnt}+'건'"></span>
+	   								 </td>
+	   								 <td th:if="${i.index == 1}">
+	   								 	<span th:text="'+'+${item.dailyDeathCnt}+'건'"></span>
+	   								 </td>
+	   								 <td th:if="${i.index == 1}">
+	   								 	<span th:text="'+'+${item.dailyExCnt}+'건'"></span>
+	   								 </td>
+	   								 <td th:if="${i.index == 1}">
+	   								 	<span th:text="'+'+${item.dailyExcCnt}+'건'"></span>
+	   								 </td>
+	   								 <td th:if="${i.index == 1}">
+	   								 	<span th:text="'+'+${item.dailyRnCnt}+'건'"></span>
+	   								 </td>
+	   								 <td th:if="${i.index == 1}">
+	   								 	<span th:text="'+'+${item.dailyClCnt}+'건'"></span>
+	   								 </td>
+	  							</tr>
+							</table>
+							<div style="text-align: right;">매일 10:00시 마다 업데이트
+							</div>
+							
+	</body>
+</html>

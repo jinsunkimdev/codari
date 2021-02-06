@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>코다리</title>
+<link rel="shortcut icon" href="../img/favicon.ico" />
+<link rel="icon" href="../img/favicon.ico" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+<link rel="stylesheet" href="/assets/css/main.css" />
+<link rel="stylesheet" href="/assets/css/covidHospital.css" />
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<script>
+      function filter(){
+
+        var value, name, item, i;
+
+        value = document.getElementById("value").value.toUpperCase();
+        item = document.getElementsByClassName("itemList");
+
+        for(i=0;i<item.length;i++){
+          name = item[i].getElementsByClassName("name");
+          if(name[0].innerHTML.toUpperCase().indexOf(value) > -1){
+            item[i].style.display = "flex";
+          }else{
+            item[i].style.display = "none";
+          }
+        }
+      }
+</script>
+<style type="text/css">
+@import url("/css/fackfont.css");
+</style>
+</head>
+<body class="is-preload">
+	<!-- Wrapper -->
+	<div id="wrapper">
+		<!-- Main -->
+		<div id="main">
+			<div class="inner">
+				<!-- Header -->
+				<header id="header">
+					<a th:href = "@{/index}" class="logo"><strong>코</strong>로나 정보, <strong>다</strong> <strong>이</strong>곳</a>
+					<ul th:if ="${session.userLoginInfo != null}" class="icons">
+						<li><span th:text="${session.userLoginInfo.user_nickname}"></span>님, 환영합니다.&nbsp;&nbsp;<a th:href = "@{/member/logoutProcess}" class="button small">로그아웃</a></li>
+					</ul>
+				</header>
+				<!-- Content -->
+				<section class=insertBody>
+					<header id="main">
+						<h1 class="covidTitle">코로나 국민안심병원 목록</h1>
+					</header>
+					<h2 class="alertTitle">*코로나 관련 국민안심병원 정보는 매일오전 6시에 업데이트됩니다.*</h2>
+				      <div class="searchHeader">
+				        <input onkeyup="filter()" type="text" id="value" placeholder="도,시 이름을 입력해주세요(예-경기고양시)">
+				        <label for="hospInput" class="label-hospInput">
+				        	<span class="content-hospInput"></span>
+				        </label>
+				      </div>
+					<div class="box">
+					<div class="container" th:each="item : ${items}">
+						<div class="itemList">
+				          <span class="name" th:text="${item.sidoNm}+${item.sgguNm}+' '+${item.yadmNm}+' TEL : ' + ${item.telno}"></span>
+				    	</div>
+				    </div><!-- container div -->
+				    <hr>
+				    </div>
+				</section>
+			</div>
+		</div>
+		<!-- Sidebar -->
+		<div id="sidebar">
+			<div class="inner">
+				<!-- Menu -->
+				<nav id="menu">
+					<header class="major">
+						<h2>Menu</h2>
+					</header>
+					<ul>
+						<li><a href="/">Homepage</a></li>
+						<li><a href="/notice/noticeList.do">공지사항</a></li>
+						<li><span class="opener">정보</span>
+							<ul>
+								<li><a href="/fact/factCheck">Fact Check</a></li>
+								<li><a href="/board/boardAll.do">정보 공유</a></li>
+								<li><a href="/covid/covidHospitalHome.do">실시간 병원 정보</a></li>
+							</ul>
+						</li>
+						<li th:if="${session.userLoginInfo != null}"><a th:href="@{/member/myPage.do}">마이페이지</a></li>
+						<li th:if="${session.userLoginInfo == null}"><a th:href="@{/member/login}">로그인 페이지</a></li>
+						<li th:if="${session.userLoginInfo == null}"><a th:href="@{/member/register}">회원 가입</a></li>
+						<li th:if="${session.userLoginInfo != null && session.userLoginInfo.user_role == 'admin'}"><span class="opener">관리자 페이지</span>
+							<ul>
+								<li><a href="/member/memberAll.do">유저 목록</a></li>
+							</ul>
+						</li>
+					</ul>
+				</nav>
+
+
+				<!-- Section -->
+				<section>
+					<header class="major">
+						<h2>Contact Us</h2>
+					</header>
+					<p>문의 사항이 있다면 아래의 수단 중 하나로 문의해 주세요.</p>
+					<ul class="contact">
+						<li class="icon solid fa-envelope"><a href="#">codari@gmail.com</a></li>
+						<li class="icon solid fa-phone">(02) 123-4567</li>
+						<li class="icon solid fa-home">서울시 성북구 한성대학교 #02876<br />Korea, TN 02-760-5800</li>
+					</ul>
+				</section>
+
+				<!-- Footer -->
+				<footer id="footer">
+					<p class="copyright">
+						&copy; 2020 -
+						<script>
+							document.write(new Date().getFullYear());
+						</script> 
+						All rights reserved. <br>Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.
+					</p>
+				</footer>
+			</div>
+		</div>
+	</div>
+	<!-- Scripts -->
+	<script src="/assets/js/jquery.min.js"></script>
+	<script src="/assets/js/browser.min.js"></script>
+	<script src="/assets/js/breakpoints.min.js"></script>
+	<script src="/assets/js/util.js"></script>
+	<script src="/assets/js/main.js"></script>
+
+</body>
+</html>

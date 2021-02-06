@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+<!--
+	Editorial by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="shortcut icon" href="../img/favicon.ico" />
+<link rel="icon" href="../img/favicon.ico" />
+<title>코다리</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+<link rel="stylesheet" href="/assets/css/main.css" />
+<style type="text/css">
+@import url("/css/fackfont.css");
+.legend {
+	border: 1px solid #555555;
+	border-radius: 5px 5px 5px 5px;
+	font-size: 0.8em;
+	margin: 10px;
+	padding: 8px;
+}
+
+.bld {
+	font-weight: bold;
+}
+.wordcloud {
+	margin: 0 auto;
+	display: block;
+	font-family: "Lucida Grande", "Droid Sans", Arial, Helvetica, sans-serif;
+}
+#btn1 {
+	float: right;
+}
+.containers {
+	text-align: center;
+}
+</style>
+<script src="/js/jQuery/jquery-3.5.1.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+	var img = document.getElementsByTagName("img");
+    for (var x = 0; x < img.length; x++) {
+      img.item(x).onclick=function() {window.open(this.src)}; 
+	}
+});
+</script>
+</head>
+<body class="is-preload">
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Main -->
+		<div id="main">
+			<div class="inner">
+				<!-- Header -->
+				<header id="header">
+					<a href="#" class="logo"><strong>코</strong>로나 정보, <strong>다</strong> <strong>이</strong>곳</a>
+					<ul th:if ="${session.userLoginInfo != null}" class="icons">
+						<li><span th:text="${session.userLoginInfo.user_nickname}"></span>님, 환영합니다.&nbsp;&nbsp;<a th:href = "@{/member/logoutProcess}" class="button small">로그아웃</a></li>
+					</ul>
+				</header>
+
+				<!-- Banner -->
+				<section id="banner">
+					<div class="content">
+						<header>
+							<h2>잘못된 요청이에요</h2>
+						</header>
+						<p>손 씻기와 방역 수칙을 잘 지켜주세요!<br><br>(이미지는 클릭하면 커집니다)</p>
+						<a href="#" onclick="history.back(); return false;">이전 페이지로 돌아가기</a>
+					</div>
+					<span class="image object"> <img src="/images/guide/guideline03.jpg" alt="이미지 없음" /></span>
+				</section>
+			</div>
+		</div>
+
+		<!-- Sidebar -->
+		<div id="sidebar">
+			<div class="inner">
+				<!-- Menu -->
+				<nav id="menu">
+					<header class="major">
+						<h2>Menu</h2>
+					</header>
+					<ul>
+						<li><a href="/">Homepage</a></li>
+						<li><a href="/notice/noticeList.do">공지사항</a></li>
+						<li><span class="opener">정보</span>
+							<ul>
+								<li><a href="/fact/factCheck">Fact Check</a></li>
+								<li><a href="/board/boardAll.do">정보 공유</a></li>
+								<li><a href="/covid/covidHospitalHome.do">실시간 병원 정보</a></li>
+							</ul>
+						</li>
+						<li th:if="${session.userLoginInfo != null}"><a th:href="@{/member/myPage.do}">마이페이지</a></li>
+						<li th:if="${session.userLoginInfo == null}"><a th:href="@{/member/login}">로그인 페이지</a></li>
+						<li th:if="${session.userLoginInfo == null}"><a th:href="@{/member/register}">회원 가입</a></li>
+						<li th:if="${session.userLoginInfo != null && session.userLoginInfo.user_role == 'admin'}"><span class="opener">관리자 페이지</span>
+							<ul>
+								<li><a href="/member/memberAll.do">유저 목록</a></li>
+							</ul>
+						</li>
+					</ul>
+				</nav>
+
+
+				<!-- Section -->
+				<section>
+					<header class="major">
+						<h2>Contact Us</h2>
+					</header>
+					<p>문의 사항이 있다면 아래의 수단 중 하나로 문의해 주세요.</p>
+					<ul class="contact">
+						<li class="icon solid fa-envelope"><a href="#">codari@gmail.com</a></li>
+						<li class="icon solid fa-phone">(02) 123-4567</li>
+						<li class="icon solid fa-home">서울시 성북구 한성대학교 #02876<br />Korea, TN 02-760-5800</li>
+					</ul>
+				</section>
+
+				<!-- Footer -->
+				<footer id="footer">
+					<p class="copyright">
+						&copy; 2020 -
+						<script>
+							document.write(new Date().getFullYear());
+						</script> 
+						All rights reserved. <br>Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.
+					</p>
+				</footer>
+			</div>
+		</div>
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="/assets/js/jquery.min.js"></script>
+	<script src="/assets/js/browser.min.js"></script>
+	<script src="/assets/js/breakpoints.min.js"></script>
+	<script src="/assets/js/util.js"></script>
+	<script src="/assets/js/main.js"></script>
+</body>
+</html>

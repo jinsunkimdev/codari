@@ -1,0 +1,26 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link rel="shortcut icon" href="../img/favicon.ico" />
+<link rel="icon" href="../img/favicon.ico" />
+<style>
+	@import url("/css/fackfont.css");
+	td{ vertical-align: middle;}
+	#date{ width: 15%;}
+	#nickname{ width: 12%;}
+	#contents{ text-align:left;}
+	#delete{ width: 7%; border-collapse: collapse;}
+</style>
+</head>
+<body>
+<h4>댓글</h4>
+<table class="alt" border=1>
+ <tr th:each= "reply : ${replylist}">
+	<td id="nickname" th:text="${reply.user_nickname}"></td>
+ 	<td id="contents" th:text="${reply.reply_content}"></td>
+ 	<td id="date" th:text="${reply.replied_date}"></td>
+ 	<td id="delete" th:if="${session.userLoginInfo != null && session.userLoginInfo.user_nickname == reply.user_nickname || session.userLoginInfo != null && session.userLoginInfo.user_role == 'admin'}"><a class="button" th:href="@{'/board/deleteReply.do?reply_id='+${reply.reply_id}}">삭제</a></td>
+ </tr>
+</table>
+</body>
+</html>

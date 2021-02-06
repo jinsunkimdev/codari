@@ -1,0 +1,193 @@
+<!DOCTYPE HTML>
+<!--
+	Editorial by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>코다리</title>
+<link rel="shortcut icon" href="../img/favicon.ico" />
+<link rel="icon" href="../img/favicon.ico" />
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, user-scalable=no" />
+<link rel="stylesheet" href="/assets/css/main.css" />
+<style type="text/css">
+@import url("/css/fackfont.css");
+/*페이지네이션 css*/
+ul.pagination li:last-child {
+	padding-left: 0 !important;
+}
+ul.pagination li:first-child {
+	padding-right: 0 !important;
+}
+ul.pagination {
+	text-align: center;
+}
+.paging {
+	text-decoration: none;
+	margin: 2px;
+	border-bottom: none;
+	font-size: 15px;
+}
+.paging:hover {
+	background-color: lightpink;
+}
+	/*여기서부터는 게시판 리스트css*/
+.notice_id{
+	text-align:center;
+	width:160px;
+}
+.noticeIndividual{
+	text-align:center;
+}
+.notice_title{
+	width:400px;
+}
+.notice_view,.created_date,.user_nickname{
+	text-align:center;
+	width:100px;
+}
+</style>
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+</head>
+<body class="is-preload">
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Main -->
+		<div id="main">
+			<div class="inner">
+
+				<!-- Header -->
+				<header id="header">
+					<a th:href = "@{/index}" class="logo"><strong>코</strong>로나 정보, <strong>다</strong> <strong>이</strong>곳</a>
+					<ul th:if ="${session.userLoginInfo != null}" class="icons">
+						<li><span th:text="${session.userLoginInfo.user_nickname}"></span>님, 환영합니다.&nbsp;&nbsp;<a th:href = "@{/member/logoutProcess}" class="button small">로그아웃</a></li>
+					</ul>
+				</header>
+
+				<!-- Content -->
+				<section>
+					<header class="main">
+						<h2>공지 목록</h2>
+					</header>
+	<div>
+	<div id="here">
+<table border="1">
+   <tr class="noticeIndividual">
+    <th class="notice_id">게시글번호</th>
+    <th class="notice_title">제목</th>
+    <th class="user_nickname">작성자</th>
+    <th class="created_date">작성일</th>
+    <th class="notice_view">조회수</th>
+   </tr>
+
+   <tr th:each="notice : ${noticelist}" >
+		<td th:text="${notice.notice_id}" class="notice_id"></td>
+		<td class="board_title"><a th:href="@{'/notice/noticeDetail.do?notice_id='+${notice.notice_id}}" th:text="${notice.notice_title}"></a></td>
+		<td th:text="${notice.user_nickname}" class="user_nickname"></td>
+		<td th:text="${notice.notice_created_date}" class="created_date"></td>
+		<td th:text="${notice.notice_view}" class="notice_view"></td>
+   </tr>
+	</th:each>
+   </table>
+   <!-- 페이지네이션 보이기 -->
+   	 <ul class="pagination">
+         <li class="paging" th:each="pageNum, numStat : ${#numbers.sequence( 1,pageCount)}" >
+       	 	<a class="paging" id="su${numStat.count}" th:text="${numStat.count}">[[${numStat.count}]]</a>
+       	 </li> 
+    </ul> 
+       	 <script>
+       	 $(function(){
+       		 $(".paging").click(function(){
+       			$.ajax({
+       				url : "noticeList2.do",
+       				data:{"pageNum": $(this).text()},
+       				success:function(responseText){
+       					$("#here").html(responseText);
+       				}
+       			});
+       			 
+       		 });
+       		  
+       	  });
+       	 </script>
+       	 </th:each>
+       	 </div>
+   <button onclick="location.href='/notice/noticeInsert.do'" th:if="${session.userLoginInfo!=null && session.userLoginInfo.user_role=='admin'}">글작성</button>
+   </div>
+				</section>
+
+			</div>
+		</div>
+
+		<!-- Sidebar -->
+		<div id="sidebar">
+			<div class="inner">
+				<!-- Menu -->
+				<nav id="menu">
+					<header class="major">
+						<h2>Menu</h2>
+					</header>
+					<ul>
+						<li><a href="/">Homepage</a></li>
+						<li><a href="/notice/noticeList.do">공지사항</a></li>
+						<li><span class="opener">정보</span>
+							<ul>
+								<li><a href="/fact/factCheck">Fact Check</a></li>
+								<li><a href="/board/boardAll.do">정보 공유</a></li>
+								<li><a href="/covid/covidHospitalHome.do">실시간 병원 정보</a></li>
+							</ul>
+						</li>
+						<li th:if="${session.userLoginInfo != null}"><a th:href="@{/member/myPage.do}">마이페이지</a></li>
+						<li th:if="${session.userLoginInfo == null}"><a th:href="@{/member/login}">로그인 페이지</a></li>
+						<li th:if="${session.userLoginInfo == null}"><a th:href="@{/member/register}">회원 가입</a></li>
+						<li th:if="${session.userLoginInfo != null && session.userLoginInfo.user_role == 'admin'}"><span class="opener">관리자 페이지</span>
+							<ul>
+								<li><a href="/member/memberAll.do">유저 목록</a></li>
+							</ul>
+						</li>
+					</ul>
+				</nav>
+
+
+				<!-- Section -->
+				<section>
+					<header class="major">
+						<h2>Contact Us</h2>
+					</header>
+					<p>문의 사항이 있다면 아래의 수단 중 하나로 문의해 주세요.</p>
+					<ul class="contact">
+						<li class="icon solid fa-envelope"><a href="#">codari@gmail.com</a></li>
+						<li class="icon solid fa-phone">(02) 123-4567</li>
+						<li class="icon solid fa-home">서울시 성북구 한성대학교 #02876<br />Korea, TN 02-760-5800</li>
+					</ul>
+				</section>
+
+				<!-- Footer -->
+				<footer id="footer">
+					<p class="copyright">
+						&copy; 2020 -
+						<script>
+							document.write(new Date().getFullYear());
+						</script> 
+						All rights reserved. <br>Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.
+					</p>
+				</footer>
+			</div>
+		</div>
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="/assets/js/jquery.min.js"></script>
+	<script src="/assets/js/browser.min.js"></script>
+	<script src="/assets/js/breakpoints.min.js"></script>
+	<script src="/assets/js/util.js"></script>
+	<script src="/assets/js/main.js"></script>
+
+</body>
+</html>

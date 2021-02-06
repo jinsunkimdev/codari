@@ -1,0 +1,97 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/assets/css/main.css" />
+<head>
+<title>코다리</title>
+<link rel="shortcut icon" href="../img/favicon.ico" />
+<link rel="icon" href="../img/favicon.ico" />
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, user-scalable=no" />
+<link rel="stylesheet" href="/assets/css/main.css" />
+<style type="text/css">
+@import url("/css/fackfont.css");
+ul.pagination li:last-child {
+	padding-left: 0 !important;
+}
+
+ul.pagination li:first-child {
+	padding-right: 0 !important;
+}
+
+ul.pagination {
+	text-align: center;
+}
+
+.paging {
+	text-decoration: none;
+	margin: 2px;
+	border-bottom: none;
+	font-size: 15px;
+}
+
+.paging:hover {
+	background-color: lightpink;
+}
+/*여기서부터는 페이지css*/
+.notice_id{
+	text-align:center;
+	width:160px;
+}
+.noticeIndividual{
+	text-align:center;
+}
+.notice_title{
+	width:400px;
+}
+.notice_view,.created_date,.user_nickname{
+	text-align:center;
+	width:100px;
+}
+</style>
+</head>
+<body>
+<table border="1">
+   <tr class="noticeIndividual">
+    <th class="notice_id">게시글번호</th>
+    <th class="notice_title">제목</th>
+    <th class="user_nickname">작성자</th>
+    <th class="created_date">작성일</th>
+    <th class="notice_view">조회수</th>
+   </tr>
+
+   <tr th:each="notice : ${noticelist}" >
+		<td th:text="${notice.notice_id}" class="notice_id"></td>
+		<td class="notice_title"><a th:href="@{'/notice/noticeDetail.do?notice_id='+${notice.notice_id}}" th:text="${notice.notice_title}"></a></td>
+		<td th:text="${notice.user_nickname}" class="user_nickname"></td>
+		<td th:text="${notice.notice_created_date}" class="created_date"></td>
+		<td th:text="${notice.notice_view}" class="notice_view"></td>
+   </tr>
+	</th:each>
+   </table>
+   <!-- 페이지네이션 보이기 -->
+        <ul class="pagination">
+         <li th:each="pageNum, numStat : ${#numbers.sequence( 1,pageCount)}" >
+       	 	<a class="paging" id="su${numStat.count}" th:text="${numStat.count}">[[${numStat.count}]]</a>
+       	 </li> 
+    </ul> 
+       	 
+       	 <script>
+       	 $(function(){
+       		 
+       		 $(".paging").click(function(){
+       			$.ajax({
+       				url : "noticeList2.do",
+       				data:{"pageNum": $(this).text()},
+       				success:function(responseText){
+       					$("#here").html(responseText);
+       				}
+       			});
+       			 
+       		 });
+       		  
+       	  });
+       	 </script>
+       	 </th:each>
+       	 </body>
+       	 </html>

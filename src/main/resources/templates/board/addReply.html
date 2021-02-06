@@ -1,0 +1,42 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>코다리</title>
+		<link rel="shortcut icon" href="../img/favicon.ico" />
+		<link rel="icon" href="../img/favicon.ico" />
+		<style>
+		@import url("/css/fackfont.css");
+		#btn{
+			float: right;
+		}
+		</style>
+			<meta charset="utf-8">
+			<meta name="viewport"
+	content="width=device-width, initial-scale=1, user-scalable=no" />
+<link rel="stylesheet" href="/assets/css/main.css" />
+	</head>
+		<body>
+			<form id="myfrm" >
+  			 	<input th:if="${role != '익명'}" type="hidden" th:name="user_nickname" th:value="${session.userLoginInfo.user_nickname}" readonly = "readonly"><br><br>
+  				<input type="hidden" th:name="board_id" th:value="${param.bid}"><br><br>
+  			 	<label>댓글쓰기:</label>
+  				<textarea id="content"  th:name="reply_content" rows="1" cols="2"></textarea><br>
+  			 	<input type="button" id="btn" value="입력" onclick = "postAddReply();"><br>
+			</form>
+		</body>
+		<script>
+		function postAddReply(){
+		//	 alert($("#myfrm").serialize());
+			$.ajax({
+				type: "POST",
+				url: "/board/addReply.do",
+				data: $("#myfrm").serialize(),	//입력된 데이터를 가져간다.
+				success: function(data){  //뿌린다
+					$(`#replyList`).html(data);
+					$('#content').val('');
+					$('#content').focus();
+			        }
+			}); 
+			
+		}
+		</script>
+</html>

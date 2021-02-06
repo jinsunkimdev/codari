@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codari.myapp.dao.NoticeDAO">
+
+<select id="selectAll" resultType="com.codari.myapp.vo.NoticeVO" parameterType="map">
+		SELECT 
+     	@ROWNUM:=@ROWNUM+1 AS RNUM
+   		,notice_id, notice_title, notice_content, date_format(notice_created_date,'%Y-%m-%d') notice_created_date, user_nickname, notice_view 
+   		FROM  notice , 
+   		(SELECT @ROWNUM := 0) TMP
+   		LIMIT #{start}, #{amount}
+</select>
+<select id="selectByNoticeId" resultType="com.codari.myapp.vo.NoticeVO">
+		SELECT  *  from notice where notice_id = #{notice_id} 
+</select>
+<insert id="insert" parameterType="com.codari.myapp.vo.NoticeVO">
+     insert into notice(user_id, notice_title, notice_content, notice_created_date, user_nickname, notice_view )
+     values( #{user_id}, #{notice_title}, #{notice_content}, current_timestamp(), #{user_nickname}, 0 )
+</insert>
+<update id="update" parameterType="com.codari.myapp.vo.NoticeVO">
+      update notice
+      set notice_title = #{notice_title}, notice_content = #{notice_content}
+      where notice_id = #{notice_id}
+</update> 
+<update id="updateViewCnt" parameterType="int">
+	update notice
+	 set notice_view = notice_view + 1
+	 where notice_id = #{notice_id}
+</update>
+<delete id="delete" parameterType="int">
+      delete from notice
+      where notice_id = #{notice_id}
+</delete>
+</mapper>
